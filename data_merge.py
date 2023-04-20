@@ -38,11 +38,13 @@ def concat_level_hotel_data(level):
 
     concat_data = pd.concat([detail_data, personality_data], axis=1)
     concat_data.to_json(f'result/{level} level hotel concat data.json')
+    concat_data.to_excel(f'result/{level} level hotel concat data.xlsx')
     print(len(concat_data), len(detail_data), len(personality_data))
 
 # sentiment_results = pd.DataFrame(sentiment_results)
 
 
 if __name__ == "__main__":
-    level = "high"
-    concat_level_hotel_data(level)
+    level = ["high", "middle"]
+    for i in level:
+        concat_level_hotel_data(i)
