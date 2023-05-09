@@ -6,6 +6,8 @@ def concat_level_hotel_data(level):
     detail_data = pd.read_json(f"data/{level} level hotel data.json")
     iovo_data = pd.read_json(f"data/{level} hotel iovo scores.json")
     personality_data = pd.read_csv(f"data/{level} level hotel personality predict.csv")
+    LIWC_data = pd.read_csv(f"data/{level} level hotel reviews - LIWC Analysis.csv")
+    LIWC_data = LIWC_data[['WC', 'tone_pos', 'tone_neg', 'emo_pos', 'emo_neg', 'adj', 'Lifestyle']]
 
     detail_data.reset_index(drop=True, inplace=True)
     personality_data.reset_index(drop=True, inplace=True)
@@ -13,6 +15,7 @@ def concat_level_hotel_data(level):
     print(detail_data.columns)
     print(personality_data.columns)
     print(iovo_data.columns)
+    print(LIWC_data.columns)
 
     with open("data/value_attributes.pickle", "rb") as f:
         attribute_group = pickle.load(f)
@@ -36,10 +39,10 @@ def concat_level_hotel_data(level):
         print(len(sentiment_results[key]))
         personality_data[f'{key}_sentiment'] = sentiment_results[key]
 
-    concat_data = pd.concat([detail_data, personality_data], axis=1)
+    concat_data = pd.concat([detail_data, personality_data, LIWC_data], axis=1)
     concat_data.to_json(f'result/{level} level hotel concat data.json')
     concat_data.to_excel(f'result/{level} level hotel concat data.xlsx')
-    print(len(concat_data), len(detail_data), len(personality_data))
+    print(len(concat_data), len(detail_data), len(personality_data), len(LIWC_data))
 
 # sentiment_results = pd.DataFrame(sentiment_results)
 
